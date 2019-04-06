@@ -1,14 +1,29 @@
-expose:
-  Args: 
-    - --v
-    - 4
-  Annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
-
+PipelineSecrets:
+  DockerConfig: '{"auths": {"docker-registry.default.svc:5000": {"auth": "c2VydmljZWFjY291bnQ6ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklpSjkuZXlKcGMzTWlPaUpyZFdKbGNtNWxkR1Z6TDNObGNuWnBZMlZoWTJOdmRXNTBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5dVlXMWxjM0JoWTJVaU9pSnFlQ0lzSW10MVltVnlibVYwWlhNdWFXOHZjMlZ5ZG1salpXRmpZMjkxYm5RdmMyVmpjbVYwTG01aGJXVWlPaUpxWlc1cmFXNXpMWGd0Y21WbmFYTjBjbmt0ZEc5clpXNHRkMncyYm5jaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNXVZVzFsSWpvaWFtVnVhMmx1Y3kxNExYSmxaMmx6ZEhKNUlpd2lhM1ZpWlhKdVpYUmxjeTVwYnk5elpYSjJhV05sWVdOamIzVnVkQzl6WlhKMmFXTmxMV0ZqWTI5MWJuUXVkV2xrSWpvaU1tWTBOR0l4WlRBdE5UZ3hPQzB4TVdVNUxXRmxZV010WXpZME5UVXdZVEJsTmpBNElpd2ljM1ZpSWpvaWMzbHpkR1Z0T25ObGNuWnBZMlZoWTJOdmRXNTBPbXA0T21wbGJtdHBibk10ZUMxeVpXZHBjM1J5ZVNKOS5mYjk4cUFrLTc1am40WnQ2WHo3bUIwaHpBR21JSlhfVXBzRXNacHlreWlPcjNmYzVod3JNUllWcERyMlVQWkptWWNpcTdzYW1ReUdia2tsaEJaR2I3ZU1nWFMyT1ZFckhKSlk3Qzk5Rno3UzIyV2hRRDItaXRsU0M3STBLSVA2Wmc2dmIzUVVJeHhtVTJ0YzZZa0FrSDQ5NGUzamE5VkxPT1lWbEJrYjQ3VFJyaVp1XzRNSGM5QWVwWm5uV0dVVll3azN1eHVYcmpiNUI2Q3daQm1wRzc3b1hvSms0YWtuQll2T2w1SV9kdnR5dUQxRnpMQ3NqZ3BtNGVpaFEwdzBxeF93NjZObjFFWk5JdXRVc1RFdHE0TG5IMG05NVptbVp3SVJGUzQwbkhnR3JqQW5CVmcxTi1vWFBpQS1sdk1ySE5ZSU1xbGJoVE9YZExZcnNvUTFtX0E="}}}'
 cleanup:
-  Args: 
-    - --cleanup
   Annotations:
     helm.sh/hook: pre-delete
     helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --cleanup
+controllerbuild:
+  enabled: true
+expose:
+  Annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --v
+  - 4
+  config:
+    domain: 192.168.64.11.nip.io
+    exposer: Route
+    http: "true"
+jenkins:
+  Servers:
+    Global:
+      EnvVars:
+        DOCKER_REGISTRY: docker-registry.default.svc:5000
+        TILLER_NAMESPACE: kube-system
+  enabled: false
+prow: {}
